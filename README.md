@@ -12,3 +12,11 @@ No claims are made as to the accuracy of this information and it has not been co
 
 manufacturers of the respective printers.
 
+
+
+NOTE:
+As the code is not signed by a code signing certificate, it is highly likely that
+Windows and/or your anti-virus software will treat the file as suspicious.
+To install, you must select "run anyway"
+
+

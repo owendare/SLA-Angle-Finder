@@ -2,9 +2,15 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "SLA Print angle calculator"
-#define MyAppVersion "1"
+#define MyAppVersion "MyAppVersion"
 #define MyAppPublisher "Owen Dare"
 #define MyAppExeName "sla_angle_finder.exe"
+
+; SourcePath points to the folder one folder above where this .iss script is located
+#define MyAppExe SourcePath + "..\\" + MyAppExeName
+#define MyAppVersion GetVersionNumbersString(MyAppExe)
+
+
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -12,16 +18,15 @@
 AppId={{4FD7C6A0-C343-4649-A794-5D7E323599E2}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-;AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
-OutputDir=C:\Users\owend\Documents\Lazarus Projects\SLA Angle Finder\Installation
-OutputBaseFilename=slaAngleCalculatorInstaller
-SetupIconFile=C:\Users\owend\Documents\Lazarus Projects\SLA Angle Finder\sla_angle_finder.ico
+OutputDir=C:\Users\owend\Documents\Lazarus Projects\SLA-Angle-Finder\Installation
+OutputBaseFilename=slaAngleCalculatorInstaller_{#MyAppVersion}
+SetupIconFile=C:\Users\owend\Documents\Lazarus Projects\SLA-Angle-Finder\sla_angle_finder.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -33,8 +38,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\owend\Documents\Lazarus Projects\SLA Angle Finder\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\owend\Documents\Lazarus Projects\SLA Angle Finder\griddata.csv"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\owend\Documents\Lazarus Projects\SLA-Angle-Finder\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\owend\Documents\Lazarus Projects\SLA-Angle-Finder\griddata.csv"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

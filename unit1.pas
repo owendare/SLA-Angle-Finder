@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Grids,
-  ExtCtrls, Menus, Math, Types, LCLType, LCLIntf, Spin, StrUtils, Registry;
+  ExtCtrls, Menus, Math, Types, LCLType, LCLIntf, Spin, StrUtils, Registry,
+  Windows;
 
 type
 
@@ -56,6 +57,7 @@ type
     procedure GotoColRow(Col, Row: integer);
     procedure DrawAngle(thisCanvas: TCanvas; ImgWidth, ImgHeight: integer;
       AngleDeg: double);
+    function GetFileVersionString(const AFileName, AKey: string): string;
   public
 
   end;
@@ -118,7 +120,7 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-
+   ProductName,FileVersion:String;
   Reg: TRegistry;
 begin
 
@@ -142,6 +144,9 @@ begin
   ScrollToSelectedRow;     // scroll to default row
   Calculate;
   Application.ShowHint := True;
+  ProductName := GetFileVersionString(ParamStr(0), 'ProductName');
+  FileVersion := GetFileVersionString(ParamStr(0), 'FileVersion');
+   Caption := Format('%s - Version %s', [ProductName, FileVersion]) ;
 
 end;
 
@@ -552,7 +557,7 @@ begin
   thisCanvas.LineTo(x2, y2);
 
   // Arc (half radius)
-  ArcRect := Rect(Center.X - Radius div 2, Center.Y - Radius div 2,
+  ArcRect := Types.Rect(Center.X - Radius div 2, Center.Y - Radius div 2,
     Center.X + Radius div 2, Center.Y + Radius div 2);
   thisCanvas.Pen.Color := clRed;
   thisCanvas.Arc(ArcRect.Left, ArcRect.Top, ArcRect.Right, ArcRect.Bottom,
@@ -573,6 +578,40 @@ begin
 end;
 
 
+// extract the file version from theexecutable
+function TForm1.GetFileVersionString(const AFileName, AKey: string): string;
+var
+  Size, TmpHandle: DWORD;
+  Buffer: Pointer;
+  Len: UINT;
+  Value: PChar;
+  Lang: array[0..3] of word;
+  SubBlock: string;
+begin
+  Result := '';
+  Size := GetFileVersionInfoSize(PChar(AFileName), TmpHandle);
+  if Size > 0 then
+  begin
+    GetMem(Buffer, Size);
+    try
+      if GetFileVersionInfo(PChar(AFileName), TmpHandle, Size, Buffer) then
+      begin
+        // Get language + codepage
+        if VerQueryValue(Buffer, '\VarFileInfo\Translation', Pointer(Value), Len) then
+        begin
+          Move(Value^, Lang, SizeOf(Lang));
+          SubBlock := Format('\StringFileInfo\%0.4x%0.4x\%s',
+            [Lang[0], Lang[1], AKey]);
+
+          if VerQueryValue(Buffer, PChar(SubBlock), Pointer(Value), Len) then
+            Result := Value;
+        end;
+      end;
+    finally
+      FreeMem(Buffer);
+    end;
+  end;
+end;
 
 
 end.

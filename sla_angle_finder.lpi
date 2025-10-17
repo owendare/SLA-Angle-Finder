@@ -18,8 +18,8 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <RevisionNr Value="1"/>
-      <BuildNr Value="5"/>
-      <StringTable FileDescription="SLA print angle calculator"/>
+      <BuildNr Value="7"/>
+      <StringTable Comments="https://github.com/owendare/SLA-Angle-Finder" FileDescription="SLA print angle calculator" ProductName="SLA print angle calculator"/>
     </VersionInfo>
     <BuildModes>
       <Item Name="Default" Default="True"/>
